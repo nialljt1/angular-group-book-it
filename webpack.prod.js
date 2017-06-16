@@ -17,7 +17,7 @@ module.exports = {
     },
 
     output: {
-        path: './wwwroot/',
+       path: __dirname + "/wwwroot", // or path: path.join(__dirname, "dist/js"),
         filename: 'dist/[name].[hash].bundle.js',
         publicPath: '/'
     },

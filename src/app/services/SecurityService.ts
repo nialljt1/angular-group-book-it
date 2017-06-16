@@ -99,9 +99,9 @@ export class SecurityService {
 
         console.log('BEGIN Authorize, no auth data');
 
-        let authorizationUrl = 'http://localhost:44313/connect/authorize';
+        let authorizationUrl = 'https://identity.groupbookit.com/connect/authorize';
         let client_id = 'angular2client';
-        let redirect_uri = 'http://localhost:8080';
+        let redirect_uri = 'http://angular-sandbox.groupbookit.com';
         let response_type = 'id_token token';
         let scope = 'openid profile bookingsscope';
         let nonce = 'N' + Math.random() + '' + Date.now();
@@ -174,7 +174,7 @@ export class SecurityService {
             this._router.navigate(['/bookings/list']);
         } else {
             this.ResetAuthorizationData();
-            this._router.navigate(['/Unauthorized']);
+            this._router.navigate(['/']);
         }
     }
 
@@ -182,10 +182,10 @@ export class SecurityService {
         // /connect/endsession?id_token_hint=...&post_logout_redirect_uri=https://myapp.com
         console.log('BEGIN Authorize, no auth data');
 
-        let authorizationUrl = 'http://localhost:44313/connect/endsession';
+        let authorizationUrl = 'https://identity.groupbookit.com/connect/endsession';
 
         let id_token_hint = this.retrieve('authorizationDataIdToken');
-        let post_logout_redirect_uri = 'http://localhost:8080/Unauthorized';
+        let post_logout_redirect_uri = 'http://angular-sandbox.groupbookit.com/';
 
         let url =
             authorizationUrl + '?' +
@@ -203,7 +203,7 @@ export class SecurityService {
             this._router.navigate(['/Forbidden']);
         } else if (error.status == 401) {
             this.ResetAuthorizationData();
-            this._router.navigate(['/Unauthorized']);
+            this._router.navigate(['/']);
         }
     }
 
@@ -277,7 +277,7 @@ export class SecurityService {
 
     private getUserData = (): Observable<string[]> => {
         this.setHeaders();
-        return this._http.get('http://localhost:44313/connect/userinfo', {
+        return this._http.get('https://identity.groupbookit.com/connect/userinfo', {
             headers: this.headers,
             body: ''
         }).map(res => res.json());

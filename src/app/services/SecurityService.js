@@ -20,7 +20,7 @@ var SecurityService = (function () {
         this._router = _router;
         this.getUserData = function () {
             _this.setHeaders();
-            return _this._http.get('http://localhost:44313/connect/userinfo', {
+            return _this._http.get('https://identity.groupbookit.com/connect/userinfo', {
                 headers: _this.headers,
                 body: ''
             }).map(function (res) { return res.json(); });
@@ -71,9 +71,9 @@ var SecurityService = (function () {
     SecurityService.prototype.Authorize = function () {
         this.ResetAuthorizationData();
         console.log('BEGIN Authorize, no auth data');
-        var authorizationUrl = 'http://localhost:44313/connect/authorize';
+        var authorizationUrl = 'https://identity.groupbookit.com/connect/authorize';
         var client_id = 'angular2client';
-        var redirect_uri = 'http://localhost:8080';
+        var redirect_uri = 'http://angular-sandbox.groupbookit.com';
         var response_type = 'id_token token';
         var scope = 'openid profile bookingsscope';
         var nonce = 'N' + Math.random() + '' + Date.now();
@@ -131,14 +131,14 @@ var SecurityService = (function () {
         }
         else {
             this.ResetAuthorizationData();
-            this._router.navigate(['/Unauthorized']);
+            this._router.navigate(['/']);
         }
     };
     SecurityService.prototype.Logoff = function () {
         console.log('BEGIN Authorize, no auth data');
-        var authorizationUrl = 'http://localhost:44313/connect/endsession';
+        var authorizationUrl = 'https://identity.groupbookit.com/connect/endsession';
         var id_token_hint = this.retrieve('authorizationDataIdToken');
-        var post_logout_redirect_uri = 'http://localhost:8080/Unauthorized';
+        var post_logout_redirect_uri = 'http://angular-sandbox.groupbookit.com/';
         var url = authorizationUrl + '?' +
             'id_token_hint=' + encodeURI(id_token_hint) + '&' +
             'post_logout_redirect_uri=' + encodeURI(post_logout_redirect_uri);
@@ -152,7 +152,7 @@ var SecurityService = (function () {
         }
         else if (error.status == 401) {
             this.ResetAuthorizationData();
-            this._router.navigate(['/Unauthorized']);
+            this._router.navigate(['/']);
         }
     };
     SecurityService.prototype.isTokenExpired = function (token, offsetSeconds) {
